@@ -28,7 +28,7 @@ class _HyperPayPaymentState extends State<HyperPayPayment> {
           javascriptMode: JavascriptMode.unrestricted,
           onPageStarted: (url) {
             print("Page Started Url");
-            if(url.contains("payment_status_api")) {
+            if(url.contains("load_models")) {
               _settingSubStatus();
             }
             print(url);

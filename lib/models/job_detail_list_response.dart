@@ -5,16 +5,16 @@ class jobDetails {
   jobDetails({this.jobDetail});
 
   jobDetails.fromJson(Map<String, dynamic> json) {
-    if (json['job_detail'] != null) {
+    if (json['job_details'] != null) {
       jobDetail = <JobDetail>[];
-      json['job_detail'].forEach((v) { jobDetail!.add(new JobDetail.fromJson(v)); });
+      json['job_details'].forEach((v) { jobDetail!.add(new JobDetail.fromJson(v)); });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.jobDetail != null) {
-      data['job_detail'] = this.jobDetail!.map((v) => v.toJson()).toList();
+      data['job_details'] = this.jobDetail!.map((v) => v.toJson()).toList();
     }
     return data;
   }

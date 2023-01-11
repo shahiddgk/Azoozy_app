@@ -43,7 +43,7 @@ dependencies:
   flutter_styled_toast: ^2.1.3
   loading_animation_widget:
   url_launcher: ^6.1.7
-  webview_flutter: 
+  webview_flutter:
 
 dev_dependencies:
   flutter_test:

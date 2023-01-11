@@ -4,9 +4,9 @@ class SubCategoryResponseModel {
   SubCategoryResponseModel({this.jobSubCategory});
 
   SubCategoryResponseModel.fromJson(Map<String, dynamic> json) {
-    if (json['job_sub_category'] != null) {
+    if (json['job_sub_categories'] != null) {
       jobSubCategory = <JobSubCategory>[];
-      json['job_sub_category'].forEach((v) {
+      json['job_sub_categories'].forEach((v) {
         jobSubCategory!.add(new JobSubCategory.fromJson(v));
       });
     }
@@ -15,7 +15,7 @@ class SubCategoryResponseModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.jobSubCategory != null) {
-      data['job_sub_category'] =
+      data['job_sub_categories'] =
           this.jobSubCategory!.map((v) => v.toJson()).toList();
     }
     return data;
