@@ -36,7 +36,6 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getSharedPrefence();
 
     Future.delayed(const Duration(seconds: 3),() {
@@ -46,7 +45,7 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
   }
 
   void getTermsData() {
-
+    print('Get Terms data ==========>');
     setState(() {
       _isLoading = true;
     });

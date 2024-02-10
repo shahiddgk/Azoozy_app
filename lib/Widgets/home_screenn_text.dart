@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 
 class HomeScreenText extends StatefulWidget {
-   HomeScreenText(this._text,this.onTap,this.closeButton,this.closeButtonTap,this.language,{Key? key}) : super(key: key);
-  String? _text;
+   HomeScreenText(this.text,this.onTap,this.closeButton,this.closeButtonTap,this.language,{Key? key}) : super(key: key);
+  String? text;
   Function onTap;
   bool closeButton;
   Function closeButtonTap;
@@ -53,7 +53,8 @@ class _HomeScreenTextState extends State<HomeScreenText> {
             child: Row(
               mainAxisAlignment:widget.closeButton ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
               children: [
-                Text( widget._text! ,style: TextStyle(color: Colors.white),),
+                Expanded(child:Text( widget.text ?? '' ,style: const TextStyle(color: Colors.white))),
+
                widget.closeButton ?const Icon(Icons.clear,color: Colors.white,) : const Icon(Icons.clear,color: Color(0xFF000028),),
               ],
             ),

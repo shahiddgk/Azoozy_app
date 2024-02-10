@@ -5,15 +5,12 @@ import 'package:azoozy_app/models/job_detail_list_response.dart';
 import 'package:azoozy_app/models/login_response_model.dart';
 import 'package:azoozy_app/models/sub_categories_response_model.dart';
 import 'package:azoozy_app/models/subscription_response_model.dart';
-import 'package:azoozy_app/models/unsubscribe_model_response.dart';
 import 'package:azoozy_app/network/response_handler.dart';
 import 'package:azoozy_app/requests/change_password_reuest.dart';
 import 'package:azoozy_app/requests/contact_us_request_model.dart';
 import 'package:azoozy_app/requests/forgot_password_request_model.dart';
 import 'package:azoozy_app/requests/log_in_request_Model.dart';
 import 'package:azoozy_app/requests/sign_up_request_model.dart';
-import 'package:azoozy_app/requests/unsubscribe_request_model.dart';
-
 import 'api_urls.dart';
 
 class HTTPManager {
@@ -176,11 +173,14 @@ class HTTPManager {
     } else {
       lang = "arb";
     }
+
+
     String url = "${ApplicationURLs.API_TERMS}?language=$lang";
+    print('=========================');
+    print(ApplicationURLs.API_TERMS);
     print(url);
 
-    final response =
-    await _handler.get(Uri.parse(url), false);
+    final response = await _handler.get(Uri.parse(url), false);
     if(language == "English") {
       String terms = response['terms'];
       return terms;

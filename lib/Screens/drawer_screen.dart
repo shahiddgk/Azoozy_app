@@ -82,7 +82,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getSharedPrefence();
     getLanuageSharedPrefence();
     super.initState();
@@ -93,7 +92,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       _isUserDataLoading = false;
-      language1 = sharedPreferences.getString("Language")!;
+      language1 = sharedPreferences.getString("Language") ?? '';
     });
 
   }
@@ -104,13 +103,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
     setState(() {
 
 
-     userLoggedIn = sharedPreferences.getBool("user_logged_in")!;
-     usertype = sharedPreferences.getString("usertype")!;
-     username = sharedPreferences.getString("username")!;
-     useremail = sharedPreferences.getString("useremail")!;
-     userid = sharedPreferences.getString("userid")!;
-     subscription = sharedPreferences.getString("subscription")!;
-      paymentstatus = sharedPreferences.getString("paymentstatus")!;
+     userLoggedIn = sharedPreferences.getBool("user_logged_in") ?? false;
+     usertype = sharedPreferences.getString("usertype") ?? '';
+     username = sharedPreferences.getString("username") ?? '';
+     useremail = sharedPreferences.getString("useremail")?? '';
+     userid = sharedPreferences.getString("userid") ?? '';
+     subscription = sharedPreferences.getString("subscription") ?? '';
+      paymentstatus = sharedPreferences.getString("paymentstatus")?? '';
     });
     if(userLoggedIn) {
       _getSubscritionStatus(userid);

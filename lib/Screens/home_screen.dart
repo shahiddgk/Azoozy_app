@@ -50,12 +50,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
      Future.delayed(const Duration(seconds: 3),() {
        _getCategoryList();
      });
-
 
     getSharedPrefence();
 
@@ -90,6 +87,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _isLoading = true;
     });
+    print('Home Screen Getting Category List');
     HTTPManager().getCategoryListing(language).then((value) {
       setState(() {
         categoriesResponseModel = value;
@@ -151,10 +149,10 @@ class _HomePageState extends State<HomePage> {
                       });
                       categoriesResponseModel.categories![index].name;
                       _getSubCategoryListing(categoriesResponseModel.categories![index].tableId.toString());
-
+      
                     },false,(){},language);
                   })),
-
+      
               Visibility(
                   visible:  _isSubCategoryVisible,
                   child: HomeScreenText(categoryName,(){
@@ -164,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                       _isDataTableVisible = false;
                     });
                   },true,(){},language)),
-
+      
               Visibility(
                   visible:  _isDataTableVisible,
                   child: HomeScreenText(subCategoryName,(){
@@ -174,9 +172,9 @@ class _HomePageState extends State<HomePage> {
                       _isDataTableVisible = false;
                     });
                   },true,(){},language)),
-
+      
               _isSubCategoryVisible ?  const SizedBox(height: 10,) : const SizedBox(height: 5,),
-
+      
               Visibility(
                 visible: _isSubCategoryVisible,
                 child: _isSubLoading ?  Align(alignment: Alignment.center,child: LoaderWidget(false),): ListView.builder(
@@ -186,11 +184,13 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     return HomeScreenText(subCategoryResponseModel.jobSubCategory![index].name,(){
                    // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CheckoutView()));
+                      print("On Tap =======================>");
                       if(useremail.isEmpty || useremail=="useremail" || userid.isEmpty || userid == "userid") {
+                        print("IF =======================>");
                         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const AccountScreen()));
                       } else if(subscribeStatus == "sub") {
+                        print("Else IF =======================>");
                         setState(() {
-
                           subCategoryName = subCategoryResponseModel.jobSubCategory![index].name!;
                           _isSubCategoryVisible = false;
                           isCategoryVisible = false;
@@ -198,11 +198,12 @@ class _HomePageState extends State<HomePage> {
                           _getJobDetailsListing(subCategoryResponseModel.jobSubCategory![index].tableId.toString());
                         });
                       } else {
+                        print("Else =======================>");
                         _launchUrlForPay(language, userid, useremail);
                       }
                     },false,(){},language);
                   }),),
-
+      
               Visibility(
                   visible: _isDataTableVisible,
                   child: _isJobDetailLoading ?  Align(alignment: Alignment.center,child: LoaderWidget(false),):  SingleChildScrollView(
@@ -240,11 +241,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   ),
-
+      
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 30),
                   child: Image.network("https://azoozy.com/assets/images/other.png",fit: BoxFit.cover,)),
-
+      
               Divider(color: Colors.white,thickness: 2,),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 10),
@@ -255,17 +256,17 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           SizedBox(width: 5,),
-                          Expanded(child: Image.network("https://azoozy.com/dev/images/apple-pay(1).png",fit: BoxFit.cover,)),
+                          Expanded(child: Image.network("https://azoozy.com/images/apple-pay(1).png",fit: BoxFit.cover,)),
                           SizedBox(width: 5,),
-                          Expanded(child: Image.network("https://azoozy.com/dev/images/maestro.png",fit: BoxFit.cover,)),
+                          Expanded(child: Image.network("https://azoozy.com/images/maestro.png",fit: BoxFit.cover,)),
                           SizedBox(width: 5,),
-                          Expanded(child: Image.network("https://azoozy.com/dev/images/paypal.png",fit: BoxFit.cover,)),
+                          Expanded(child: Image.network("https://azoozy.com/images/paypal.png",fit: BoxFit.cover,)),
                           SizedBox(width: 5,),
-                          Expanded(child: Image.network("https://azoozy.com/dev/images/visa.png",fit: BoxFit.cover,)),
+                          Expanded(child: Image.network("https://azoozy.com/images/visa.png",fit: BoxFit.cover,)),
                           SizedBox(width: 5,),
-                          Expanded(child: Image.network("https://azoozy.com/dev/images/master-card(1).png",fit: BoxFit.cover,)),
+                          Expanded(child: Image.network("https://azoozy.com/images/master-card(1).png",fit: BoxFit.cover,)),
                           SizedBox(width: 5,),
-                          Expanded(child: Image.network("https://azoozy.com/dev/images/mada.png",fit: BoxFit.cover,)),
+                          Expanded(child: Image.network("https://azoozy.com/images/mada.png",fit: BoxFit.cover,)),
                           SizedBox(width: 5,),
                         ],
                       ),
@@ -273,7 +274,7 @@ class _HomePageState extends State<HomePage> {
 
                     ],
                   )),
-
+                        
             ],
           ),
         ),
@@ -430,7 +431,7 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
 
-      language = sharedPreferences.getString("Language")!;
+      language = sharedPreferences.getString("Language") ?? '';
 
       _isUserDataLoading = false;
     });
@@ -445,9 +446,9 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
 
-      useremail = sharedPreferences.getString("useremail")!;
-      userid = sharedPreferences.getString("userid")!;
-      subscribeStatus = sharedPreferences.getString("subscription")!;
+      useremail = sharedPreferences.getString("useremail") ?? '';
+      userid = sharedPreferences.getString("userid") ?? '';
+      subscribeStatus = sharedPreferences.getString("subscription") ?? '';
 
       _isUserDataLoading = false;
     });

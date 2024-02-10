@@ -18,7 +18,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
 
     getSharedPrefence();
 
@@ -41,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     setState(() {
-      language = sharedPreferences.getString("Language")!;
+      language = sharedPreferences.getString("Language") ?? 'English';
       print("Splash Shared Preference");
       print(language);
     });

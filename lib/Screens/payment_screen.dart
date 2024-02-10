@@ -13,11 +13,23 @@ class HyperPayPayment extends StatefulWidget {
   String email;
   String language;
 
+
   @override
   _HyperPayPaymentState createState() => _HyperPayPaymentState();
 }
 
 class _HyperPayPaymentState extends State<HyperPayPayment> {
+
+  @override
+  initState(){
+    super.initState();
+    print('User ID :: ${widget.userId}');
+    print('Email :: ${widget.email}');
+    print('Language :: ${widget.language}');
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

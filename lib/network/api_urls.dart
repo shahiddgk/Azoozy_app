@@ -1,5 +1,8 @@
 class ApplicationURLs {
-  static const BASE_URL = "https://azoozy.com/dev/api/";
+  // Dev
+  // static const BASE_URL = "https://azoozy.com/dev/api/";
+  // Live
+  static const BASE_URL = "https://azoozy.com/api/";
 
   //Listing
   // ignore: constant_identifier_names, prefer_interpolation_to_compose_strings
@@ -28,7 +31,7 @@ class ApplicationURLs {
   // ignore: constant_identifier_names
   static const API_FORGOT_PASSWORD = "${BASE_URL}forgot_password";
   // ignore: constant_identifier_names
-  static const API_HYPER_PAY_PAYMENT = "https://azoozy.com/dev/welcome/hyper_pay/";
+  static const API_HYPER_PAY_PAYMENT = "https://azoozy.com/welcome/hyper_pay/";
 // ignore: constant_identifier_names
   static const API_SUBSCRIPTOIN_STATUS = "${BASE_URL}subscription_status/";
 
