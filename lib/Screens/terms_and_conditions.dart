@@ -1,56 +1,56 @@
-import 'package:azoozy_app/Widgets/details_page.dart';
-import 'package:azoozy_app/Widgets/loader_widget.dart';
-import 'package:azoozy_app/network/http_manager.dart';
+import 'package:azoozyapp/network/http_manager.dart';
+import 'package:azoozyapp/services/user_provider.dart';
+import 'package:azoozyapp/widgets/details_text.dart';
+import 'package:azoozyapp/widgets/loader_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:translator/translator.dart';
-
-class TermsAndCondition extends StatefulWidget {
-  const TermsAndCondition({Key? key}) : super(key: key);
+import 'package:provider/provider.dart';
+class TermsAndConditions extends StatefulWidget {
+  const TermsAndConditions({super.key});
 
   @override
-  _TermsAndConditionState createState() => _TermsAndConditionState();
+  State<TermsAndConditions> createState() => _TermsAndConditionsState();
 }
 
-class _TermsAndConditionState extends State<TermsAndCondition> {
+class _TermsAndConditionsState extends State<TermsAndConditions> {
 
-  GoogleTranslator translator = GoogleTranslator();
-  String language1 = "English";
-  bool _isUserDataLoading = true;
-  bool _isLoading = true;
-  String data = "";
+  bool _isLoading = false;
+  String data = '';
 
-  String output2 = "";
-
-  String trans(String text) {
-    translator
-        .translate(text, to: "ar")
-        .then((value) {
-      setState(() {
-        output2 = value.text;
-      });
-    });
-    return output2;
-  }
 
   @override
   void initState() {
-    getSharedPrefence();
-
-    Future.delayed(const Duration(seconds: 3),() {
-      getTermsData();
-    });
     super.initState();
+    getTermsData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<UserProvider>(context);
+    final lang = provider.language;
+    return Scaffold(
+      appBar: AppBar(
+        title:  Text(lang == "eng" ? "Terms & Conditions" :"الأحكام والشروط"),
+      ),
+      // ignore: avoid_unnecessary_containers
+      body: Container(
+          color: const Color.fromRGBO(189, 195, 199, 100),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: _isLoading
+              ? LoaderWidget(false)
+              : DetailsText(data)),
+    );
   }
 
   void getTermsData() {
-    print('Get Terms data ==========>');
     setState(() {
       _isLoading = true;
     });
 
-    HTTPManager().getTerms(language1).then((value) {
+    final lang = Provider.of<UserProvider>(context,listen: false).language;
+
+    HTTPManager().getTerms(lang == 'eng' ? 'English' : 'Arabic' ).then((value) {
 
       print(value);
       setState(() {
@@ -79,34 +79,4 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
 
   }
 
-  Future<void> getSharedPrefence() async {
-    setState(() {
-      _isUserDataLoading = true;
-    });
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
-    setState(() {
-
-      language1 = sharedPreferences.getString("Language")!;
-      _isUserDataLoading = false;
-    });
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title:  Text(language1 == "English" ? "Term & condition" :"الأحكام والشروط"),
-      ),
-      // ignore: avoid_unnecessary_containers
-      body: Container(
-          color: const Color.fromRGBO(189, 195, 199, 100),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: _isLoading && _isUserDataLoading ?
-           Align(alignment: Alignment.center,child: LoaderWidget(true),)
-              : DetailsText(data)),
-    );
-  }
 }

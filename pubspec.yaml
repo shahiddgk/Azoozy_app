@@ -1,6 +1,5 @@
-name: azoozy_app
-description: A new Flutter application.
-
+name: azoozyapp
+description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -12,13 +11,15 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: '>=3.1.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,15 +36,16 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   multilevel_drawer: ^2.0.0
-  email_validator: ^2.0.1
-  http: ^0.13.5
-  translator:
-  shared_preferences: ^2.0.15
+  email_validator: ^2.1.17
+  http: ^1.1.0
+  translator: ^1.0.0
+  shared_preferences: ^2.2.2
+  flutter_styled_toast: ^2.2.1
+  loading_animation_widget: ^1.2.0+4
   flutter_html: ^2.2.1
-  flutter_styled_toast: ^2.1.3
-  loading_animation_widget:
-  url_launcher: ^6.1.7
-  webview_flutter:
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  provider: ^6.1.1
 
 dev_dependencies:
   flutter_test:

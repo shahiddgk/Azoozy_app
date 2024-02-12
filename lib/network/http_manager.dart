@@ -1,16 +1,16 @@
 
 
-import 'package:azoozy_app/models/categories_response_model.dart';
-import 'package:azoozy_app/models/job_detail_list_response.dart';
-import 'package:azoozy_app/models/login_response_model.dart';
-import 'package:azoozy_app/models/sub_categories_response_model.dart';
-import 'package:azoozy_app/models/subscription_response_model.dart';
-import 'package:azoozy_app/network/response_handler.dart';
-import 'package:azoozy_app/requests/change_password_reuest.dart';
-import 'package:azoozy_app/requests/contact_us_request_model.dart';
-import 'package:azoozy_app/requests/forgot_password_request_model.dart';
-import 'package:azoozy_app/requests/log_in_request_Model.dart';
-import 'package:azoozy_app/requests/sign_up_request_model.dart';
+import 'package:azoozyapp/models/categories_response_model.dart';
+import 'package:azoozyapp/models/job_detail_list_response.dart';
+import 'package:azoozyapp/models/login_response_model.dart';
+import 'package:azoozyapp/models/sub_categories_response_model.dart';
+import 'package:azoozyapp/models/subscription_response_model.dart';
+import 'package:azoozyapp/network/response_handler.dart';
+import 'package:azoozyapp/requests/change_password_reuest.dart';
+import 'package:azoozyapp/requests/contact_us_request_model.dart';
+import 'package:azoozyapp/requests/forgot_password_request_model.dart';
+import 'package:azoozyapp/requests/log_in_request_Model.dart';
+import 'package:azoozyapp/requests/sign_up_request_model.dart';
 import 'api_urls.dart';
 
 class HTTPManager {
@@ -79,6 +79,7 @@ class HTTPManager {
 
     final response =
     await _handler.post(Uri.parse(url),loginRequestModel.toJson() ,false);
+    print(response);
     LoginResponseModel loginResponseModel = LoginResponseModel.fromJson(response);
 
     // ignore: avoid_print

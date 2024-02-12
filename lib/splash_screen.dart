@@ -1,12 +1,11 @@
 import 'dart:async';
-
-import 'package:azoozy_app/Screens/drawer_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:azoozyapp/screens/drawer_screen.dart';
+import 'package:azoozyapp/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -14,27 +13,17 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  String language = "Language";
+  String language = "English";
 
   @override
   void initState() {
-
-    getSharedPrefence();
-
-    Timer(const Duration(seconds: 5),
-            ()=>Navigator.pushReplacement(context,
-            MaterialPageRoute(builder:
-                (context) =>
-            const DrawerScreen()
-            )
-        )
-    );
+    // getSharedPrefence();
+    Timer(const Duration(seconds: 5), ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen())));
 
     super.initState();
   }
 
   Future<void> getSharedPrefence() async {
-    print("Splash Shared Preference");
     print(language);
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
