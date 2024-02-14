@@ -1,5 +1,10 @@
 
 
+import 'dart:convert';
+import 'dart:math';
+import 'package:azoozyapp/constants/utils.dart';
+import 'package:crypto/crypto.dart';
+import 'package:azoozyapp/constants/constants.dart';
 import 'package:azoozyapp/models/categories_response_model.dart';
 import 'package:azoozyapp/models/job_detail_list_response.dart';
 import 'package:azoozyapp/models/login_response_model.dart';
@@ -11,6 +16,8 @@ import 'package:azoozyapp/requests/contact_us_request_model.dart';
 import 'package:azoozyapp/requests/forgot_password_request_model.dart';
 import 'package:azoozyapp/requests/log_in_request_Model.dart';
 import 'package:azoozyapp/requests/sign_up_request_model.dart';
+import 'package:flutter_amazonpaymentservices/environment_type.dart';
+import 'package:flutter_amazonpaymentservices/flutter_amazonpaymentservices.dart';
 import 'api_urls.dart';
 
 class HTTPManager {
@@ -150,7 +157,7 @@ class HTTPManager {
     return subCategoryResponseModel;
   }
 
-  Future<jobDetails> getJobDetailsListing(String subCategoryId,String language) async {
+  Future<JobDetails> getJobDetailsListing(String subCategoryId,String language) async {
     String lang;
     if(language == "English") {
       lang = "eng";
@@ -162,8 +169,8 @@ class HTTPManager {
 
     final response =
     await _handler.get(Uri.parse(url), false);
-    jobDetails jobdetails =
-        jobDetails.fromJson(response);
+    JobDetails jobdetails =
+        JobDetails.fromJson(response);
     return jobdetails;
   }
 
@@ -233,6 +240,109 @@ class HTTPManager {
       String privacyPolicy = response['aboutus_arabic'];
       return privacyPolicy;
     }
+  }
+
+
+
+
+  Future<String> createSignature(String deviceId) async{
+
+
+
+    Map<String,dynamic> requestData= {
+      'access_code': Constants.apsAccessCode,
+      'device_id': deviceId,
+      'language': 'en',
+      'merchant_identifier': Constants.apsMerchantId,
+      'service_command': 'SDK_TOKEN',
+    };
+
+
+    // Map<String, dynamic> requestData = {
+    //   'access_code': Constants.apsAccessCode,
+    //   'agreement_id' : agreementId,
+    //   'amount' :100, // Done
+    //   'command': 'AUTHORIZATION', // Done
+    //   'currency': 'SAR', // Done
+    //   'customer_email': 'haseebratedsolution2308@gamail.com', // Done
+    //   'customer_ip' :  '::1',
+    //   'customer_name' : 'Haseeb',
+    //   'language': 'en', // Done
+    //   'merchant_identifier': Constants.apsMerchantId,
+    //   'merchant_reference': merchantReference, // Done
+    //   'recurring_mode': 'UNSCHEDULED',
+    // };
+
+    var sortedKeys = requestData.keys.toList()..sort();
+
+    var shaString = '';
+    for (var key in sortedKeys) {
+      shaString += '$key=${requestData[key]}';
+    }
+
+    print('=============>> SHA STRING <<============');
+    print(shaString);
+
+    // Add SHA request passphrase
+    var shaRequestPassphrase = Constants.apsReqPhrase;
+    shaString = '$shaRequestPassphrase$shaString$shaRequestPassphrase';
+
+    print('=============>> SHA STRING <<============');
+    print(shaString);
+
+    // Generate signature using SHA algorithm (e.g., SHA-256)
+    var signature =   sha256.convert(utf8.encode(shaString)).toString();
+
+
+
+
+    return signature;
+  }
+
+  Future<String?> getSdkToken(String deviceId) async{
+
+    String merchantReference = randomString(16);
+    String agreementId =  randomString(18);
+
+    print('==============>> Merchant Reference <<=============');
+    print(merchantReference);
+
+    print('==============>> Agreement ID <<=============');
+    print(agreementId);
+
+
+    String signature = await createSignature(deviceId);
+
+    print('===========>> Signature <<=============');
+    print(signature);
+
+
+    Map<String,dynamic> requestParams = {
+      'access_code': Constants.apsAccessCode,
+      'device_id': deviceId,
+      'language': 'en',
+      'merchant_identifier': Constants.apsMerchantId,
+      'service_command': 'SDK_TOKEN',
+      'signature': signature,
+    };
+
+    final response = await  _handler.postAmazon(Uri.parse(Constants.apsUrl), requestParams);
+    print(' ============ >> Response <<==================');
+    print(response);
+    print(' ============ >> SDK Token <<==================');
+    print(response['sdk_token']);
+
+
+
+
+
+    if(response['response_code'] == '22000'){
+
+      return response['sdk_token'];
+
+    }
+    return null;
+
 
   }
 

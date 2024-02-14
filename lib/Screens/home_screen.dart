@@ -1,5 +1,6 @@
 import 'package:azoozyapp/services/database_helper.dart';
 import 'package:azoozyapp/widgets/home_drawer.dart';
+import 'package:azoozyapp/widgets/home_widget.dart';
 import 'package:azoozyapp/widgets/loader_widget.dart';
 import 'package:flutter/material.dart';
 class HomeScreen extends StatefulWidget {
@@ -50,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("AZOOZY.COM",style: TextStyle(fontWeight: FontWeight.bold))),
-      drawer: const HomeDrawer(),
+      drawer: HomeDrawer(isLoading: isLoading),
       body: isLoading
           ? LoaderWidget(false)
-          : Container(),
+          : HomeWidget(),
     );
   }
 }

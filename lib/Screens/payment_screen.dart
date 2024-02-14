@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:amazon_payfort/amazon_payfort.dart';
+
+
+class PaymentScreen extends StatefulWidget {
+  const PaymentScreen({super.key});
+
+  @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold();
+  }
+}

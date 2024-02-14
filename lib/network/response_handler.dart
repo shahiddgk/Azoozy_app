@@ -34,6 +34,24 @@ class ResponseHandler {
     }
   }
 
+
+  Future postAmazon(
+      Uri url, Map<String, dynamic> params) async {
+    var head = Map<String, String>();
+    head['content-type'] = 'application/json';
+    var responseJson;
+    try {
+      final response = await http.post(url, body: jsonEncode(params), headers: head).timeout(Duration(seconds: 45));
+      responseJson = json.decode(response.body.toString());
+      print(responseJson);
+      return responseJson;
+    } on TimeoutException {
+      throw FetchDataException("Slow internet connection");
+    } on SocketException {
+      throw FetchDataException('No Internet connection');
+    }
+  }
+
   // Future postImage(String url, Map<String, String> params,
   //     File image, bool isHeaderRequired, String message) async {
   //   var head = Map<String, String>();

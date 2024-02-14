@@ -1,3 +1,4 @@
+import 'package:azoozyapp/constants/Assets.dart';
 import 'package:azoozyapp/constants/app_colors.dart';
 import 'package:azoozyapp/network/http_manager.dart';
 import 'package:azoozyapp/requests/contact_us_request_model.dart';
@@ -60,7 +61,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
                             alignment: Alignment.topLeft,
                             child: Container(
                                 width: MediaQuery.of(context).size.width/2,
-                                child: Image.network("https://azoozy.com/assets/images/azoozyblack.png"))),
+                                child: Image.network(Assets.azoozyBlackImagePath))),
                       ),
                       const SizedBox(height: 20,),
                       Padding(

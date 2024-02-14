@@ -1,9 +1,7 @@
 import 'package:azoozyapp/constants/app_colors.dart';
-import 'package:azoozyapp/services/database.dart';
 import 'package:azoozyapp/services/user_provider.dart';
 import 'package:azoozyapp/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
 void main()  async {
@@ -26,6 +24,7 @@ class MyApp extends StatelessWidget {
         title: 'Azoozy.com',
         theme: ThemeData(
           primarySwatch:  buildMaterialColor(AppColors.primarySwatch),
+          fontFamily: 'Poppins-Regular',
         ),
         home: const SplashScreen(),
       ),

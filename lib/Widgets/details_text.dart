@@ -1,3 +1,4 @@
+import 'package:azoozyapp/constants/Assets.dart';
 import 'package:flutter/material.dart';
 
 class DetailsText extends StatefulWidget {
@@ -24,7 +25,7 @@ class _DetailsTextState extends State<DetailsText> {
                   alignment: Alignment.topLeft,
                   child: Container(
                       width: MediaQuery.of(context).size.width/2,
-                      child: Image.network("https://azoozy.com/assets/images/azoozyblack.png"))),
+                      child: Image.network(Assets.azoozyBlackImagePath))),
             ),
             const SizedBox(height: 20,),
             Padding(

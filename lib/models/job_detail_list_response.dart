@@ -1,10 +1,10 @@
 // ignore: camel_case_types
-class jobDetails {
+class JobDetails {
   List<JobDetail>? jobDetail;
 
-  jobDetails({this.jobDetail});
+  JobDetails({this.jobDetail});
 
-  jobDetails.fromJson(Map<String, dynamic> json) {
+  JobDetails.fromJson(Map<String, dynamic> json) {
     if (json['job_details'] != null) {
       jobDetail = <JobDetail>[];
       json['job_details'].forEach((v) { jobDetail!.add(new JobDetail.fromJson(v)); });
