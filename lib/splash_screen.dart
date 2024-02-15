@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:azoozyapp/network/http_manager.dart';
 import 'package:azoozyapp/screens/drawer_screen.dart';
 import 'package:azoozyapp/screens/home_screen.dart';
+import 'package:azoozyapp/services/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,34 +16,30 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
 
   String language = "English";
+  DatabaseHelper databaseHelper = DatabaseHelper();
 
   @override
   void initState() {
-    // getSharedPrefence();
+    getSharedPreference();
     Timer(const Duration(seconds: 5), ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen())));
 
     super.initState();
   }
 
-  Future<void> getSharedPrefence() async {
-    print(language);
+  Future<void> getSharedPreference() async {
 
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final user = await databaseHelper.getUser();
 
-    setState(() {
-      language = sharedPreferences.getString("Language") ?? 'English';
-      print("Splash Shared Preference");
-      print(language);
-    });
+    if(user?.userid != null){
+      HTTPManager().getUserDetails(user!.userid!).then((value) async {
 
-    // if(language != "English" || language != "Arabic") {
-    //   print("Splash Shared Preference1");
-    //   print(language);
-    //   setState(() {
-    //     sharedPreferences.setString("Language", "English");
-    //   });
-    //
-    // }
+        if(value.userSession != null) {
+          await databaseHelper.setUser(context, value.userSession!);
+        }
+      }).onError((error, stackTrace) {
+
+      });
+    }
 
   }
 

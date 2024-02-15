@@ -32,7 +32,17 @@ class ApplicationURLs {
   static const API_FORGOT_PASSWORD = "${BASE_URL}forgot_password";
   // ignore: constant_identifier_names
   static const API_HYPER_PAY_PAYMENT = "https://azoozy.com/welcome/hyper_pay/";
-// ignore: constant_identifier_names
+ // ignore: constant_identifier_names
   static const API_SUBSCRIPTOIN_STATUS = "${BASE_URL}subscription_status/";
+
+  static const API_SUBSCRIPTION_UPDATE = "${BASE_URL}subscription_update";
+
+  static const API_UPDATE_PAYMENT_STATUS = 'https://azoozy.com/api/payment_status_update';
+
+  static const API_USER_DETAIL = "${BASE_URL}userdetail";
+
+
+
+
 
 }

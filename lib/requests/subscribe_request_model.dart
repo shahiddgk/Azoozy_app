@@ -1,10 +1,10 @@
 
-class UnsubscribeRequestModel {
+class SubscribeRequestModel {
   String? userId;
 
-  UnsubscribeRequestModel({this.userId,});
+  SubscribeRequestModel({this.userId,});
 
-  UnsubscribeRequestModel.fromJson(Map<String, dynamic>json) {
+  SubscribeRequestModel.fromJson(Map<String, dynamic>json) {
     userId = json['user_id'];
   }
 

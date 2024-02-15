@@ -20,6 +20,9 @@ class DatabaseHelper{
 
 
 
+
+
+
   Future<void> setUser(BuildContext context, UserSession user)async{
 
     UserProvider userProvider = Provider.of(context, listen: false);
@@ -44,6 +47,9 @@ class DatabaseHelper{
   }
 
   Future<String> getLanguage() async => await database.getLanguage();
+
+
+  Future<UserSession?> getUser() async => await database.getUser();
 
   Future<void> changeLanguage(String lang) async => await database.setLanguage(lang);
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:amazon_payfort/amazon_payfort.dart';
+
 
 
 class PaymentScreen extends StatefulWidget {

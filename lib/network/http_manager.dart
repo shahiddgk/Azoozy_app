@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:azoozyapp/constants/utils.dart';
+import 'package:azoozyapp/requests/subscribe_request_model.dart';
 import 'package:crypto/crypto.dart';
 import 'package:azoozyapp/constants/constants.dart';
 import 'package:azoozyapp/models/categories_response_model.dart';
@@ -242,6 +243,45 @@ class HTTPManager {
     }
   }
 
+  Future<void> updateSubscribeStatus(SubscribeRequestModel subscribeRequestModel)async{
+    String url = '${ApplicationURLs.API_SUBSCRIPTION_UPDATE}?user_id=${subscribeRequestModel.userId}';
+    print('============>> URL <<================');
+    print(url);
+    print(subscribeRequestModel.toJson());
+    final response = await _handler.get(Uri.parse(url), false);
+    print(response);
+  }
+
+
+  Future<void> updatePaymentStatus(SubscribeRequestModel subscribeRequestModel) async{
+    String url  = ApplicationURLs.API_UPDATE_PAYMENT_STATUS;
+    print('============>> URL <<================');
+    print(url);
+    print(subscribeRequestModel.toJson());
+    final response = await _handler.post(Uri.parse(url),subscribeRequestModel.toJson(),false);
+    print(response);
+  }
+
+
+  Future<LoginResponseModel> getUserDetails(String userId) async{
+    final url = "${ApplicationURLs.API_USER_DETAIL}?user_id=$userId";
+    // ignore: avoid_print
+    print(url);
+
+    final response =
+    await _handler.get(Uri.parse(url),false);
+    print(response);
+    LoginResponseModel loginResponseModel = LoginResponseModel.fromJson(response);
+
+    // ignore: avoid_print
+    print(response.toString());
+    return loginResponseModel;
+
+  }
+
+
+
+
 
 
 
@@ -331,9 +371,6 @@ class HTTPManager {
     print(response);
     print(' ============ >> SDK Token <<==================');
     print(response['sdk_token']);
-
-
-
 
 
     if(response['response_code'] == '22000'){

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:azoozyapp/constants/payment_config.dart';
 import 'package:azoozyapp/constants/utils.dart';
 import 'package:azoozyapp/models/categories_response_model.dart';
 import 'package:azoozyapp/models/job_detail_list_response.dart';
@@ -12,6 +13,7 @@ import 'package:azoozyapp/widgets/home_screen_text.dart';
 import 'package:azoozyapp/widgets/loader_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:pay/pay.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_amazonpaymentservices/environment_type.dart';
 import 'package:flutter_amazonpaymentservices/flutter_amazonpaymentservices.dart';
@@ -20,7 +22,8 @@ import 'package:flutter_amazonpaymentservices/flutter_amazonpaymentservices.dart
 
 
 class HomeWidget extends StatefulWidget {
-  const HomeWidget({super.key});
+  const HomeWidget({super.key, required this.startPaymentProcessing});
+  final Function startPaymentProcessing;
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -38,9 +41,11 @@ class _HomeWidgetState extends State<HomeWidget> {
   bool _isSubCategoryVisible = false;
   bool _isDataTableVisible = false;
   bool isCategoryVisible = true;
-  bool processingPayment = false;
+
   String categoryName = "";
   String subCategoryName = "";
+
+
 
 
   @override
@@ -61,14 +66,13 @@ class _HomeWidgetState extends State<HomeWidget> {
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       color: const Color(0xFF000028),
-      child:processingPayment
-          ? LoaderWidget(true)
-          :  SingleChildScrollView(
+      child:SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             Padding(
                 padding:const EdgeInsets.only(left: 10,right: 10,top: 30),
                 child:  Text(lang == "eng" ? "Hello What kind of job are you looking for?" : "أهلا كيف يمكنني مساعدك؟",style: TextStyle(fontSize: 24,color: Colors.white),)),
@@ -131,16 +135,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       }else if(user.subscription == 'unsub' || user.paymentstatus == 'unpaid'){
 
                         print('Sending Request');
-
-                        startPaymentProcess();
-
-
-
-
-
-
-                        // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentScreen(),));
-
+                        widget.startPaymentProcessing();
 
                       }else if(user.subscription == 'sub' || user.paymentstatus == 'paid') {
                           setState(() {
@@ -151,22 +146,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                             _getJobDetailsListing(subCategoryResponseModel.jobSubCategory![index].tableId.toString());
                           });
                       }
-                      // if(useremail.isEmpty || useremail=="useremail" || userid.isEmpty || userid == "userid") {
-                      //   print("IF =======================>");
-                      //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const AccountScreen()));
-                      // } else if(subscribeStatus == "sub") {
-                      //   print("Else IF =======================>");
-                      //   setState(() {
-                      //     subCategoryName = subCategoryResponseModel.jobSubCategory![index].name!;
-                      //     _isSubCategoryVisible = false;
-                      //     isCategoryVisible = false;
-                      //     _isDataTableVisible = true;
-                      //     _getJobDetailsListing(subCategoryResponseModel.jobSubCategory![index].tableId.toString());
-                      //   });
-                      // } else {
-                      //   print("Else =======================>");
-                      //   // _launchUrlForPay(language, userid, useremail);
-                      // }
                     },false,(){},lang);
                   }),),
 
@@ -207,6 +186,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
               ),
             ),
+
 
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5,vertical: 30),
@@ -346,58 +326,4 @@ class _HomeWidgetState extends State<HomeWidget> {
     });
   }
 
-
-
-
-
-  startPaymentProcess()async {
-    setState(() {
-      processingPayment = true;
-    });
-    final user = Provider.of<UserProvider>(context, listen: false).user;
-
-    final deviceId = await FlutterAmazonpaymentservices.getUDID;
-    print(' ========>> Device Id <<=============');
-    print(deviceId);
-
-    if (deviceId != null) {
-      HTTPManager().getSdkToken(deviceId).then((value) {
-        setState(() {
-          processingPayment = false;
-        });
-
-        print('============>> SDK Token in Home Widget << =============');
-        print(value);
-
-        String merchantReference = randomString(16);
-
-        print(' ============>> Flutter Amazon Payment <<================');
-        Map<String, dynamic> requestParams = {
-          "amount": 100,
-          "command": "AUTHORIZATION",
-          "currency": "SAR",
-          "customer_email": user.useremail,
-          "language": "en",
-          "merchant_reference": merchantReference,
-          "sdk_token": value,
-        };
-
-        FlutterAmazonpaymentservices.normalPay(requestParams, EnvironmentType.sandbox).then((value){
-          print(' ============>> Flutter Amazon Payment Successful <<================');
-          print(value);
-          DatabaseHelper().changeStatusToSubscribe(context, 'paid');
-        }).onError((error, stackTrace) {
-          print(' ============>> Flutter Amazon Payment Error <<================');
-          print(error);
-        });
-        
-      }).onError((error, stackTrace) {
-        setState(() {
-          processingPayment = false;
-        });
-
-        print('Error :: $error');
-      });
-    }
-  }
 }
