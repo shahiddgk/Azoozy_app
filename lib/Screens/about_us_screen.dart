@@ -1,3 +1,6 @@
+import 'package:azoozyapp/constants/Assets.dart';
+import 'package:azoozyapp/constants/app_colors.dart';
+import 'package:azoozyapp/constants/app_styles.dart';
 import 'package:azoozyapp/network/http_manager.dart';
 import 'package:azoozyapp/services/user_provider.dart';
 import 'package:azoozyapp/widgets/details_text.dart';
@@ -21,7 +24,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   void initState() {
     super.initState();
-    getAboutData();
+    // getAboutData();
   }
 
 
@@ -35,12 +38,22 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
         title:  Text( lang == "eng" ? "About Us" : "معلومات عنا"),
       ),
       body: Container(
-          color: const Color.fromRGBO(189, 195, 199, 100),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: _isLoading
-              ? LoaderWidget(false)
-              : DetailsText(data)
+        color: AppColors.primarySwatch,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+            children: [
+              Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  alignment: Alignment.center,
+                  child: Text('Azoozy.com', style: TextStyle(fontSize: 30, color: AppColors.whiteColor, fontWeight: FontWeight.bold))),
+              Text('Azoozy.com is an electronic advertising and marketing agency specializing in the human resource space publishing the latest jobs in the Saudi market.',textAlign: TextAlign.center,style: AppStyle.whiteTextStyle,),
+            ],
+          ),
+          // child: _isLoading
+          //     ? LoaderWidget(false)
+          //     : DetailsText(data)
         ),
     );
   }

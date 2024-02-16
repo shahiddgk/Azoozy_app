@@ -67,13 +67,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.primarySwatch,
       appBar: AppBar(title: const Text("AZOOZY.COM",style: TextStyle(fontWeight: FontWeight.bold))),
-      drawer: HomeDrawer(startPaymentProcessing: startPaymentProcessWithCard),
+      drawer: HomeDrawer(startPaymentProcessing: startPaymentProcess),
       body: isLoading
           ? LoaderWidget(true)
           : Stack(
         alignment: Alignment.center,
         children: [
-          HomeWidget(startPaymentProcessing: testSubscribeReq),
+          HomeWidget(startPaymentProcessing: startPaymentProcess),
           if(processingPayment)
           LoaderWidget(true),
         ],
@@ -97,26 +97,27 @@ class _HomeScreenState extends State<HomeScreen> {
   startPaymentProcess()async{
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.bottomSheetColor,
+      backgroundColor: AppColors.primarySwatch,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
       builder:(context) {
-        final paymentItem = [PaymentItem(amount: '100',label: 'Total', status: PaymentItemStatus.final_price)];
+        final paymentItem = [PaymentItem(amount: '1',label: 'Total', status: PaymentItemStatus.final_price)];
         return Container(
           padding: const EdgeInsets.all(10),
           height: MediaQuery.of(context).size.height / (Platform.isIOS ?  7.5 : 5),
+          // height: MediaQuery.of(context).size.height / 5,
           child: Column(
             children: [
               Container(
                 height: 5,
                 width: 40,
                 decoration: BoxDecoration(
-                    color: Colors.white60,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10)
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 12),
               ApplePayButton(
                 height: 45,
                 paymentConfiguration: PaymentConfiguration.fromJsonString(defaultApplePay),
@@ -128,6 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.of(context).pop();
                 },
                 onPaymentResult: (result) {
+                  print('=========>> ON Payment Result <<========');
+                  print(result);
+                  updateSubscriptionStatus();
 
                 },
                 paymentItems: paymentItem,
@@ -142,6 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 type: GooglePayButtonType.pay,
                 loadingIndicator: LoaderWidget(true),
                 onPaymentResult: (result) {
+                  print('=========>> ON Payment Result <<========');
+                  print(result);
+                  updateSubscriptionStatus();
                 },
                 paymentItems: paymentItem,
               ),
@@ -232,21 +239,9 @@ class _HomeScreenState extends State<HomeScreen> {
         FlutterAmazonpaymentservices.normalPay(requestParams, EnvironmentType.sandbox, isShowResponsePage: false).then((value){
           print(' ============>> Flutter Amazon Payment Successful <<================');
           print(value);
-          setState(() {
-            processingPayment = true;
-          });
-          HTTPManager().updateSubscribeStatus(SubscribeRequestModel(userId: user.userid)).then((value) {
-            print(' ============>> Subscription Status is Updated <<================');
-            DatabaseHelper().changeStatusToSubscribe(context, 'paid');
-            setState(() {
-              processingPayment = false;
-            });
-          }).onError((error, stackTrace){
-            setState(() {
-              processingPayment = false;
-            });
-            print('Error :: $error');
-          });
+
+          updateSubscriptionStatus();
+
 
 
 
@@ -262,5 +257,27 @@ class _HomeScreenState extends State<HomeScreen> {
         print('Error :: $error');
       });
     }
+  }
+
+  updateSubscriptionStatus(){
+
+
+    setState(() {
+      processingPayment = true;
+    });
+
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+    HTTPManager().updateSubscribeStatus(SubscribeRequestModel(userId: user.userid)).then((value) {
+      print(' ============>> Subscription Status is Updated <<================');
+      DatabaseHelper().changeStatusToSubscribe(context, 'paid');
+      setState(() {
+        processingPayment = false;
+      });
+    }).onError((error, stackTrace){
+      setState(() {
+        processingPayment = false;
+      });
+      print('Error :: $error');
+    });
   }
 }
